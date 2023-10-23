@@ -14,7 +14,7 @@ public class Land {
     private Image land2;
     private Image land3;
     private Image land4;
-    private ArrayList<LandImage> listLandImage;
+    private ArrayList<ImageWPosX> listLandImage;
     private int counter = 1;
 
     public Land() throws IOException {
@@ -40,22 +40,22 @@ public class Land {
         this.land3 = land3pic;
         this.land4 = land4pic;
 
-        listLandImage = new ArrayList<LandImage>();
+        listLandImage = new ArrayList<ImageWPosX>();
         for(int i = 0; i < 8; i++){
             int posx = 300*i;
             Random rand = new Random();
             int randomnum = rand.nextInt(4);
             if(randomnum == 0){
-                LandImage iLand = new LandImage(posx, land1);
+                ImageWPosX iLand = new ImageWPosX(posx, land1);
                 listLandImage.add(iLand);
             } else if(randomnum == 1){
-                LandImage iLand = new LandImage(posx, land2);
+                ImageWPosX iLand = new ImageWPosX(posx, land2);
                 listLandImage.add(iLand);
             } else if(randomnum == 2){
-                LandImage iLand = new LandImage(posx, land3);
+                ImageWPosX iLand = new ImageWPosX(posx, land3);
                 listLandImage.add(iLand);
             } else if(randomnum == 3){
-                LandImage iLand = new LandImage(posx, land4);
+                ImageWPosX iLand = new ImageWPosX(posx, land4);
                 listLandImage.add(iLand);
             }
 
@@ -64,11 +64,11 @@ public class Land {
     }
 
     public void update(){
-        for(LandImage iLand: listLandImage){
-            iLand.setXcooridnate((iLand.getXcooridnate()-1));
+        for(ImageWPosX iLand: listLandImage){
+            iLand.setXcooridnate((iLand.getXcooridnate()-4));
         }
         if(listLandImage.get(counter).getXcooridnate() == 0){
-            LandImage end = listLandImage.get(listLandImage.size()-1);
+            ImageWPosX end = listLandImage.get(listLandImage.size()-1);
             Image landimage = land1;
             Random rand = new Random();
             int randomnum = rand.nextInt(4);
@@ -81,7 +81,7 @@ public class Land {
             } else if(randomnum == 3){
                 landimage = land4;
             }
-            LandImage newaddition = new LandImage((end.getXcooridnate()+300), landimage);
+            ImageWPosX newaddition = new ImageWPosX((end.getXcooridnate()+300), landimage);
             listLandImage.add(newaddition);
             counter++;
         }
@@ -90,7 +90,7 @@ public class Land {
 
     public void draw(Graphics g){
         for(int i = 0; i < listLandImage.size()-2; i++){
-            g.drawImage(listLandImage.get(i).getLandimage(), listLandImage.get(i).getXcooridnate(), 78, null);
+            g.drawImage(listLandImage.get(i).getImage(), listLandImage.get(i).getXcooridnate(), 78, null);
         }
     }
 

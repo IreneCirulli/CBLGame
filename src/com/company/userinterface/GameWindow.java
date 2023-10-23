@@ -13,8 +13,6 @@ public class GameWindow extends JFrame{
 
         this.gscreen = new GameScreen();
         add(gscreen);
-
-        //gscreen.setStartgame(true);
         gscreen.gameStart();
     }
 

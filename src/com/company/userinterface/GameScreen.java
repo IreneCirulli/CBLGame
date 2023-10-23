@@ -1,6 +1,7 @@
 package com.company.userinterface;
 
 import com.company.objects.Land;
+import com.company.objects.Obstacle;
 import com.company.objects.Sky;
 
 import javax.swing.*;
@@ -13,8 +14,9 @@ public class GameScreen extends JPanel implements Runnable{
     public int tickcount = 20;
     private Land land;
     private Sky sky;
+    private Obstacle obstacle;
     private int i = 0;
-    //private boolean startgame = false;
+    static boolean startgame = false;
 
 
     public GameScreen(){
@@ -23,26 +25,25 @@ public class GameScreen extends JPanel implements Runnable{
         try {
             this.sky = new Sky();
             this.land = new Land();
+            this.obstacle = new Obstacle();
         } catch (IOException e) {
         }
 
     }
 
-    /*public void setStartgame(boolean startgame) {
-        this.startgame = startgame;
-    }
-     */
-
     public void gameStart(){
-        //System.out.println(startgame);
-        //while(this.startgame == true){
+        System.out.println(startgame);
+        if(this.startgame == true){
             thread.start();
-        //}
+        }
     }
 
-    public void paint(Graphics g){
+    public void paintComponent(Graphics g){
         sky.draw(g);
         land.draw(g);
+        if(i>=300){
+            obstacle.draw(g);
+        }
     }
 
     @Override
@@ -50,8 +51,14 @@ public class GameScreen extends JPanel implements Runnable{
         while(true){
             try {
                 i++;
-                sky.update();
+                sky.updatelayer1();
+                sky.updatelayer2();
+                sky.updatelayer3();
+                sky.updatelayer4();
                 land.update();
+                if(i>=500){
+                    obstacle.update();
+                }
                 repaint();
                 thread.sleep(tickcount);
 

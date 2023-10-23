@@ -15,10 +15,10 @@ public class Screen extends JPanel{
         startbutton.setSize(400, 100);
         this.add(startbutton, BorderLayout.CENTER);
 
-        this.gwindow = new GameWindow();
-        gwindow.setSize(1000, 400);
-
         startbutton.addActionListener(e -> {
+            GameScreen.startgame = true;
+            this.gwindow = new GameWindow();
+            gwindow.setSize(1000, 400);
             gwindow.setVisible(true);
         });
 
