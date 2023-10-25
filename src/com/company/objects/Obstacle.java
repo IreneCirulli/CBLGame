@@ -39,11 +39,11 @@ public class Obstacle {
         } catch (IOException e) {
         }
         Image mushroom1 = bufferedobstacle1pic.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        Image mushroom2 = bufferedobstacle2pic.getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+        Image mushroom2 = bufferedobstacle2pic.getScaledInstance(150, 160, Image.SCALE_SMOOTH);
         Image flower = bufferedobstacle3pic.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         Image bush = bufferedobstacle4pic.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         Image grass = bufferedobstacle5pic.getScaledInstance(175, 175, Image.SCALE_SMOOTH);
-        Image empty = bufferedemptypic.getScaledInstance(175, 175, Image.SCALE_SMOOTH);
+        Image empty = bufferedemptypic.getScaledInstance(175, 1, Image.SCALE_SMOOTH);
 
         this.mushroom1 = mushroom1;
         this.mushroom2 = mushroom2;
@@ -60,7 +60,7 @@ public class Obstacle {
             int posx = number * i;
 
             ImageWPosX iObstacle = new ImageWPosX(posx, empty, 4);
-            Rectangle rect = new Rectangle(80, 100);
+            Rectangle rect = new Rectangle(80, 1);
             listObstacleImage.add(iObstacle);
             hitbox.add(rect);
  /*
@@ -109,7 +109,7 @@ public class Obstacle {
 
     public void update(){
         for(ImageWPosX iObstacle: listObstacleImage){
-            iObstacle.setXcooridnate((iObstacle.getXcooridnate()-4));
+            iObstacle.setXcooridnate((iObstacle.getXcooridnate()-6));
         }
 
         if(listObstacleImage.get(counter).getXcooridnate() <= 0){
@@ -126,7 +126,7 @@ public class Obstacle {
             } else if(randomnum == 1){
                 landimage = mushroom2;
                 num = 1;
-                Rectangle mushrooom2 = new Rectangle(125, 150);
+                Rectangle mushrooom2 = new Rectangle(125, 125);
                 hitbox.add(mushrooom2);
             } else if(randomnum == 2){
                 landimage = flower;
@@ -155,23 +155,37 @@ public class Obstacle {
 
     public void draw(Graphics g){
         for (int i = 0; i < listObstacleImage.size()-2; i++){
-                if (listObstacleImage.get(i).getNum() == 0) {
-                    g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 175, null);
-                    g.drawRect(listObstacleImage.get(i).getXcooridnate() + 43, 207, hitbox.get(i).width, hitbox.get(i).height);
-                } else if (listObstacleImage.get(i).getNum() == 2) {
-                    g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 132, null);
-                    g.drawRect(listObstacleImage.get(i).getXcooridnate() + 55, 207, hitbox.get(i).width, hitbox.get(i).height);
-                } else if (listObstacleImage.get(i).getNum() == 1) {
-                    g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 154, null);
-                    g.drawRect(listObstacleImage.get(i).getXcooridnate() + 12, 178, hitbox.get(i).width, hitbox.get(i).height);
-                } else if (listObstacleImage.get(i).getNum() == 3) {
-                    g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 140, null);
-                    g.drawRect(listObstacleImage.get(i).getXcooridnate() + 45, 230, hitbox.get(i).width, hitbox.get(i).height);
-                } else if (listObstacleImage.get(i).getNum() == 4) {
-                    g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 175, null);
-                    g.drawRect(listObstacleImage.get(i).getXcooridnate() + 50, 228, hitbox.get(i).width, hitbox.get(i).height);
-                }
+            if (listObstacleImage.get(i).getNum() == 0) {
+                g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 175, null);
+                hitbox.get(i).x = listObstacleImage.get(i).getXcooridnate() + 43;
+                hitbox.get(i).y = 207;
+                // g.drawRect(hitbox.get(i).x, hitbox.get(i).y, hitbox.get(i).width, hitbox.get(i).height);
+            } else if (listObstacleImage.get(i).getNum() == 2) {
+                g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 132, null);
+                hitbox.get(i).x = listObstacleImage.get(i).getXcooridnate() + 55;
+                hitbox.get(i).y = 207;
+                // g.drawRect(hitbox.get(i).x,hitbox.get(i).y, hitbox.get(i).width, hitbox.get(i).height);
+            } else if (listObstacleImage.get(i).getNum() == 1) {
+                g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 182, null);
+                hitbox.get(i).x = listObstacleImage.get(i).getXcooridnate() + 12;
+                hitbox.get(i).y = 200;
+                g.drawRect(hitbox.get(i).x, hitbox.get(i).y, hitbox.get(i).width, hitbox.get(i).height);
+            } else if (listObstacleImage.get(i).getNum() == 3) {
+                g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 140, null);
+                hitbox.get(i).x = listObstacleImage.get(i).getXcooridnate() + 45;
+                hitbox.get(i).y = 230;
+                // g.drawRect(hitbox.get(i).x, hitbox.get(i).y, hitbox.get(i).width, hitbox.get(i).height);
+            } else if (listObstacleImage.get(i).getNum() == 4) {
+                g.drawImage(listObstacleImage.get(i).getImage(), listObstacleImage.get(i).getXcooridnate(), 175, null);
+                hitbox.get(i).x = listObstacleImage.get(i).getXcooridnate() + 50;
+                hitbox.get(i).y = 228;
+                // g.drawRect(hitbox.get(i).x, hitbox.get(i).y, hitbox.get(i).width, hitbox.get(i).height);
+            }
         }
+    }
+
+    public ArrayList<Rectangle> getObsticleList() {
+        return hitbox;
     }
 
 

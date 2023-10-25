@@ -1,5 +1,7 @@
 package com.company.objects;
 
+import com.company.userinterface.GameScreen;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,6 +18,7 @@ public class Land {
     private Image land4;
     private ArrayList<ImageWPosX> listLandImage;
     private int counter = 1;
+    private int i = 0;
 
     public Land() throws IOException {
 
@@ -41,7 +44,7 @@ public class Land {
         this.land4 = land4pic;
 
         listLandImage = new ArrayList<ImageWPosX>();
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < 11; i++){
             int posx = 300*i;
             Random rand = new Random();
             int randomnum = rand.nextInt(4);
@@ -65,7 +68,7 @@ public class Land {
 
     public void update(){
         for(ImageWPosX iLand: listLandImage){
-            iLand.setXcooridnate((iLand.getXcooridnate()-4));
+            iLand.setXcooridnate((iLand.getXcooridnate()-6));
         }
         if(listLandImage.get(counter).getXcooridnate() == 0){
             ImageWPosX end = listLandImage.get(listLandImage.size()-1);
@@ -83,13 +86,14 @@ public class Land {
             }
             ImageWPosX newaddition = new ImageWPosX((end.getXcooridnate()+300), landimage);
             listLandImage.add(newaddition);
-            counter++;
+            listLandImage.remove(0);
+            //counter++;
         }
 
     }
 
     public void draw(Graphics g){
-        for(int i = 0; i < listLandImage.size()-2; i++){
+        for(int i = 0; i < listLandImage.size(); i++){
             g.drawImage(listLandImage.get(i).getImage(), listLandImage.get(i).getXcooridnate(), 78, null);
         }
     }
