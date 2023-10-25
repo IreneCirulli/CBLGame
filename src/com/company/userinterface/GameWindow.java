@@ -1,6 +1,7 @@
 package com.company.userinterface;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 public class GameWindow extends JFrame{
 
@@ -9,11 +10,15 @@ public class GameWindow extends JFrame{
     public GameWindow(){
         super("Bunny Game");
         setSize(1000, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        this.gscreen = new GameScreen();
+        try {
+            this.gscreen = new GameScreen();
+        } catch (FileNotFoundException e) {
+        }
         add(gscreen);
         gscreen.gameStart();
+
     }
 
 }

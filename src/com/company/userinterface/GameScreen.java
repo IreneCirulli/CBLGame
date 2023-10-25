@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 public class GameScreen extends JPanel implements Runnable, KeyListener{
 
@@ -24,17 +24,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
     private BunnyHitbox bunnyHitbox;
     private CollisionHandler collisionHandler;
     private Image gameoverImage;
-    private Button restartButton;
+    private JButton restartButton;
     private double runcounter = 0.0;
     private JLabel runcounterLabel;
     private Font font;
+    private String runnercounterString;
+    private String personalrecordString;
 
-    //private boolean startgame = false;
     static boolean startgame = false;
     private boolean gameOver = false;
 
 
-    public GameScreen() {
+    public GameScreen() throws FileNotFoundException {
         addKeyListener(this);
         setFocusable(true);
         thread = new Thread(this);
@@ -45,19 +46,25 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             this.bunnyHitbox = new BunnyHitbox();
             this.obstacle = new Obstacle();
             this.collisionHandler = new CollisionHandler(bunnyHitbox,obstacle.getObsticleList());
-            this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 400, Image.SCALE_SMOOTH);;
+            this.restartButton = new JButton("RESTART GAME");
+            this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
         } catch (IOException e) {
         }
 
         this.runcounterLabel = new JLabel("meters ran = 0.0");
-        this.font = new Font("Courier", Font.BOLD,20);
+        this.font = new Font("Courier", Font.BOLD,17);
         runcounterLabel.setForeground(Color.white);
-        Color backgroundcolour = new Color(174, 209, 187);
+        Color backgroundcolour = new Color(138, 222, 169);
         runcounterLabel.setBackground(backgroundcolour);
         runcounterLabel.setOpaque(true);
         this.runcounterLabel.setFont(font);
         this.add(runcounterLabel, BorderLayout.NORTH);
-
+        this.runnercounterString = " ";
+        Scanner scanner = new Scanner(new File("personalrecord.txt"));
+        while (scanner.hasNextLine() == true) {
+            this.personalrecordString = scanner.nextLine();
+        }
+        scanner.close();
     }
 
     /*public void setStartgame(boolean startgame) {
@@ -88,11 +95,46 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             }
             Color rectcolour = new Color(138, 222, 169);
             g.setColor(rectcolour);
-            g.fillRoundRect(350,3,300, 25, 20, 20);
+            g.fillRoundRect(220,3,550, 25, 20, 20);
         } else {
+            if(Integer.parseInt(runnercounterString) >= Integer.parseInt(personalrecordString)){
+                clearFile();
+                try {
+                    addtoFile(runnercounterString);
+                } catch (IOException e) {
+                }
+            }
             this.remove(runcounterLabel);
+            setLayout(new BorderLayout());
+            add(restartButton, BorderLayout.SOUTH);
             g.drawImage(gameoverImage, 0, 0, null);
+            restartButton.addActionListener(e -> {
+                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                frame.dispose();
+            });
         }
+    }
+
+    public void clearFile(){
+        try{
+            FileWriter fw = new FileWriter("personalrecord.txt", false);
+            PrintWriter pw = new PrintWriter(fw, false);
+            pw.flush();
+            pw.close();
+            fw.close();
+        }catch(Exception exception){
+        }
+    }
+
+    public void addtoFile(String newrecord) throws IOException {
+
+        FileWriter filew = new FileWriter("personalrecord.txt", true);
+        BufferedWriter bw = new BufferedWriter(filew);
+        PrintWriter fw = new PrintWriter(bw);
+
+        fw.println(newrecord);
+        fw.close();
+
     }
 
     @Override
@@ -102,8 +144,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
                 i++;
                 if(i>=200){
 
-                    String newruncounter = Integer.toString((i/10)-20);
-                    runcounterLabel.setText("meters ran = " + newruncounter);
+                    runnercounterString = Integer.toString((i/10)-20);
+                    runcounterLabel.setText("personal record = " + personalrecordString + " meters currently ran = " + runnercounterString);
                 }
                 System.out.println(i);
                 sky.updatelayer1();
