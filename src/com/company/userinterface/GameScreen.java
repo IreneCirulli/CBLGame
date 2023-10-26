@@ -3,6 +3,8 @@ package com.company.userinterface;
 import com.company.objects.*;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -95,6 +97,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             g.fillRoundRect(220,3,550, 25, 20, 20);
         } else {
             thread.interrupt();
+            GameWindow.startmusic = false;
+            try {
+                GameWindow.music(GameWindow.clip, GameWindow.ais);
+            } catch (LineUnavailableException e) {
+            } catch (IOException e) {
+            } catch (UnsupportedAudioFileException e) {
+            }
             try {
                 this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
             } catch (IOException e) {
