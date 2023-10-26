@@ -25,7 +25,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
     private CollisionHandler collisionHandler;
     private Image gameoverImage;
     private JButton restartButton;
-    private double runcounter = 0.0;
     private JLabel runcounterLabel;
     private Font font;
     private String runnercounterString;
@@ -46,8 +45,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             this.bunnyHitbox = new BunnyHitbox();
             this.obstacle = new Obstacle();
             this.collisionHandler = new CollisionHandler(bunnyHitbox,obstacle.getObsticleList());
-            this.restartButton = new JButton("RESTART GAME");
-            this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
         } catch (IOException e) {
         }
 
@@ -90,29 +87,40 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             land.draw(g);
             bunny.draw(g);
             bunnyHitbox.draw(g);
-            if (i>=200) {
+            if (i>=600) {
                 obstacle.draw(g);
             }
             Color rectcolour = new Color(138, 222, 169);
             g.setColor(rectcolour);
             g.fillRoundRect(220,3,550, 25, 20, 20);
         } else {
-            if(Integer.parseInt(runnercounterString) >= Integer.parseInt(personalrecordString)){
-                clearFile();
-                try {
-                    addtoFile(runnercounterString);
-                } catch (IOException e) {
-                }
+            thread.interrupt();
+            try {
+                this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
+            } catch (IOException e) {
             }
-            this.remove(runcounterLabel);
-            setLayout(new BorderLayout());
-            add(restartButton, BorderLayout.SOUTH);
             g.drawImage(gameoverImage, 0, 0, null);
-            restartButton.addActionListener(e -> {
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                frame.dispose();
-            });
+            this.restartButton = new JButton("RESTART GAME");
+            endGame();
         }
+    }
+
+    public void endGame(){
+
+        if(Integer.parseInt(runnercounterString) >= Integer.parseInt(personalrecordString)){
+            clearFile();
+            try {
+                addtoFile(runnercounterString);
+            } catch (IOException e) {
+            }
+        }
+        this.remove(runcounterLabel);
+        setLayout(new BorderLayout());
+        add(restartButton, BorderLayout.CENTER);
+        restartButton.addActionListener(e -> {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            frame.dispose();
+        });
     }
 
     public void clearFile(){
@@ -142,8 +150,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
         while(!gameOver){
             try {
                 i++;
-                if(i>=200){
-
+                if(i>=400){
                     runnercounterString = Integer.toString((i/10)-20);
                     runcounterLabel.setText("personal record = " + personalrecordString + " meters currently ran = " + runnercounterString);
                 }
@@ -153,7 +160,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
                 sky.updatelayer3();
                 sky.updatelayer4();
                 land.update();
-                if (i>=200){
+                if (i>=600){
                     obstacle.update();
                 }
                 bunny.update(this.tickcount);

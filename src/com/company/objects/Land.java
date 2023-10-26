@@ -16,7 +16,9 @@ public class Land {
     private Image land2;
     private Image land3;
     private Image land4;
+    private Image tree;
     private ArrayList<ImageWPosX> listLandImage;
+    private ArrayList<ImageWPosX> listTreeImage;
     private int counter = 1;
     private int i = 0;
 
@@ -26,25 +28,36 @@ public class Land {
         BufferedImage bufferedland2pic = null;
         BufferedImage bufferedland3pic = null;
         BufferedImage bufferedland4pic = null;
+        BufferedImage bufferedtreepic = null;
         try {
             bufferedland1pic = ImageIO.read(new File("land1.png"));
             bufferedland2pic = ImageIO.read(new File("land2.png"));
             bufferedland3pic = ImageIO.read(new File("land3.png"));
             bufferedland4pic = ImageIO.read(new File("land4.png"));
+            bufferedtreepic = ImageIO.read(new File("tree.png"));
         } catch (IOException e) {
         }
         Image land1pic = bufferedland1pic.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         Image land2pic = bufferedland2pic.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         Image land3pic = bufferedland3pic.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
         Image land4pic = bufferedland4pic.getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+        Image treepic = bufferedtreepic.getScaledInstance(230, 230, Image.SCALE_SMOOTH);
 
         this.land1 = land1pic;
         this.land2 = land2pic;
         this.land3 = land3pic;
         this.land4 = land4pic;
+        this.tree = treepic;
 
         listLandImage = new ArrayList<ImageWPosX>();
+        listTreeImage = new ArrayList<ImageWPosX>();
         for(int i = 0; i < 11; i++){
+
+            if(i<=8){
+                int posxtree = 800*i;
+                ImageWPosX iTree = new ImageWPosX(posxtree, tree);
+                listTreeImage.add(iTree);
+            }
             int posx = 300*i;
             Random rand = new Random();
             int randomnum = rand.nextInt(4);
@@ -70,6 +83,7 @@ public class Land {
         for(ImageWPosX iLand: listLandImage){
             iLand.setXcooridnate((iLand.getXcooridnate()-6));
         }
+
         if(listLandImage.get(counter).getXcooridnate() == 0){
             ImageWPosX end = listLandImage.get(listLandImage.size()-1);
             Image landimage = land1;
@@ -90,9 +104,24 @@ public class Land {
             //counter++;
         }
 
+        for(ImageWPosX iTree: listTreeImage){
+            iTree.setXcooridnate((iTree.getXcooridnate()-5));
+        }
+        if(listTreeImage.get(counter).getXcooridnate() == 0){
+            ImageWPosX end = listTreeImage.get(listTreeImage.size()-1);
+            ImageWPosX newaddition = new ImageWPosX((end.getXcooridnate()+800), tree);
+            listTreeImage.add(newaddition);
+            listTreeImage.remove(0);
+            //counter++;
+        }
+
     }
 
+
     public void draw(Graphics g){
+        for(int i = 0; i < listTreeImage.size(); i++){
+            g.drawImage(listTreeImage.get(i).getImage(), listTreeImage.get(i).getXcooridnate(), 88, null);
+        }
         for(int i = 0; i < listLandImage.size(); i++){
             g.drawImage(listLandImage.get(i).getImage(), listLandImage.get(i).getXcooridnate(), 78, null);
         }
