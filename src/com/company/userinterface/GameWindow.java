@@ -25,7 +25,7 @@ public class GameWindow extends JFrame{
         } catch (FileNotFoundException e) {
         }
         add(gscreen);
-        File file = new File("run.wav");
+        File file = new File("bgmusic.wav");
         try {
             this.clip = AudioSystem.getClip();
             this.ais = AudioSystem.getAudioInputStream(file);

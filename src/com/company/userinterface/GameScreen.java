@@ -126,6 +126,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
         this.remove(runcounterLabel);
         setLayout(new BorderLayout());
         add(restartButton, BorderLayout.CENTER);
+        GameWindow.startmusic = true;
         restartButton.addActionListener(e -> {
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
             frame.dispose();
