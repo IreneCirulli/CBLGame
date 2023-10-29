@@ -46,7 +46,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             this.bunny = new Bunny();
             this.bunnyHitbox = new BunnyHitbox();
             this.obstacle = new Obstacle();
-            this.collisionHandler = new CollisionHandler(bunnyHitbox,obstacle.getObsticleList());
+            this.collisionHandler = new CollisionHandler(this.bunnyHitbox,obstacle.getObsticleList());
             this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
         } catch (IOException e) {
         }
@@ -91,8 +91,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             sky.draw(g);
             land.draw(g);
             bunny.draw(g);
-            bunnyHitbox.draw(g);
-            if (i>=600) {
+            //bunnyHitbox.draw(g);
+            if (i>=300) {
                 obstacle.draw(g);
             }
             Color rectcolour = new Color(138, 222, 169);
@@ -165,19 +165,18 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
                     runnercounterString = Integer.toString((i/10)-20);
                     runcounterLabel.setText("personal record = " + personalrecordString + " meters currently ran = " + runnercounterString);
                 }
-                System.out.println(i);
                 sky.updatelayer1();
                 sky.updatelayer2();
                 sky.updatelayer3();
                 sky.updatelayer4();
                 land.update();
-                if (i>=600){
+                if (i>=300){
                     obstacle.update();
                 }
                 bunny.update(this.tickcount);
                 bunnyHitbox.update(bunny.getY());
                 collisionHandler.updateObsticles(obstacle.getObsticleList());
-                this.gameOver = collisionHandler.checkCollision();
+                this.gameOver = collisionHandler.hitDecection();
                 repaint();
 
                 thread.sleep(tickcount);

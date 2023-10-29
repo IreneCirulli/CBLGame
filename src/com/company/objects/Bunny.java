@@ -15,17 +15,20 @@ public class Bunny {
     private Image sprite3;
     private static int LAND_LEVEL = 240;
     private ArrayList<Image> sprites;
+    private Rectangle2 hitbox;
 
     private int x  = 200;
+    private double xd = x;
     public int y = LAND_LEVEL;
+    private double yd = y;
     public int vel = 0;
     private  int acc = 0;
     private int maxAcc = 5;
     private int maxVel;
 
 
-    private static int WIDTH = 75;
-    private static int HEIGHT = 75;
+    private static int WIDTH ;
+    private static int HEIGHT ;
 
 
     private boolean alternateImage = false;
@@ -42,7 +45,7 @@ public class Bunny {
     boolean ableToJump = true;
     private int firstJumpCounter = 0;
     private int jumps;
-    private int maxJumps = 5;
+    private int maxJumps = 4;
 
     private boolean hasUpdate = true;
 
@@ -51,6 +54,12 @@ public class Bunny {
 
     public Bunny() {
         try {
+            this.x = 200;
+            this.y = LAND_LEVEL;
+            Bunny.WIDTH = 75;
+            Bunny.HEIGHT = 75;
+
+            this.hitbox = new Rectangle2(this.x + 5, this.y + 30, Bunny.WIDTH, Bunny.HEIGHT);
             Image image1 = ImageIO.read(new File("bunny1.png"));
             this.sprite1 = image1.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
@@ -64,6 +73,8 @@ public class Bunny {
             this.sprites = new ArrayList<Image>();
             this.sprites.add(this.sprite1);
             this.sprites.add(this.sprite2);
+
+
         } catch (IOException e) { }
 
     }
@@ -118,7 +129,7 @@ public class Bunny {
     public void jump() {
         if (this.upPressed && ableToJump ) {
             if (determineFirstJump()) {
-                this.vel = this.vel + 25;
+                this.vel = this.vel + 15;
             } else if (this.jumps < maxJumps) {
                 this.vel = this.vel + 2;
             } else {
@@ -127,7 +138,8 @@ public class Bunny {
             this.jumps++;
             this.acc = 1;
         } else {
-            this.acc = 2;
+
+            this.acc = 1;
 
 
         }
@@ -150,7 +162,6 @@ public class Bunny {
 
     public void makeDownKeyHappen() {
         if (downPressed && !upPressed ){
-            System.out.println("down key pressed");
             if (this.vel > 0) {
                 this.vel = 0;
             }
@@ -225,6 +236,7 @@ public class Bunny {
         if (this.y >= LAND_LEVEL) {
             this.y = LAND_LEVEL;
         }
+        this.yd = y;
     }
 
     public void update(int n) {
@@ -236,6 +248,8 @@ public class Bunny {
             jump();
             makeDownKeyHappen();
             updatePosition();
+
+            this.hitbox = new Rectangle2(this.x + 5, this.y + 30, Bunny.WIDTH, Bunny.HEIGHT);
         }
 
     }
@@ -247,12 +261,7 @@ public class Bunny {
     }
 
     public void drawHitbox(Graphics g) {
-
-
-        if (this.hitboxIsVisible == true) {
-            g.drawRect(this.x + 5, this.y + 30, WIDTH - 20, HEIGHT - 50);
-        }
-
+        this.hitbox.draw(g);
     }
 
     public void setUpPressedValueTo(boolean value) {
@@ -262,5 +271,12 @@ public class Bunny {
     public void setDownPressedValueTo(boolean value) {
         this.downPressed = value;
     }
-}
 
+    public double  getYDouble() {
+        return this.yd;
+    }
+
+    public Rectangle2 getHitbox() {
+        return this.hitbox;
+    }
+}

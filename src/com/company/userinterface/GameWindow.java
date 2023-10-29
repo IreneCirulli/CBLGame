@@ -18,6 +18,7 @@ public class GameWindow extends JFrame{
     public GameWindow(){
         super("Bunny Game");
         setSize(1000, 400);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         try {
