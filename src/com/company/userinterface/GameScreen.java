@@ -47,8 +47,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             this.bunnyHitbox = new BunnyHitbox();
             this.obstacle = new Obstacle();
             this.collisionHandler = new CollisionHandler(bunnyHitbox,obstacle.getObsticleList());
+            this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
         } catch (IOException e) {
         }
+
+        this.restartButton = new JButton("RESTART GAME");
 
         this.runcounterLabel = new JLabel("meters ran = 0.0");
         this.font = new Font("Courier", Font.BOLD,17);
@@ -104,12 +107,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
             } catch (IOException e) {
             } catch (UnsupportedAudioFileException e) {
             }
-            try {
-                this.gameoverImage =  ImageIO.read(new File("gameover2.png")).getScaledInstance(1000, 380, Image.SCALE_SMOOTH);
-            } catch (IOException e) {
-            }
             g.drawImage(gameoverImage, 0, 0, null);
-            this.restartButton = new JButton("RESTART GAME");
             endGame();
         }
     }
@@ -125,7 +123,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener{
         }
         this.remove(runcounterLabel);
         setLayout(new BorderLayout());
-        add(restartButton, BorderLayout.CENTER);
+        restartButton.setFont(font);
+        add(restartButton, BorderLayout.SOUTH);
+        revalidate();
+        validate();
         GameWindow.startmusic = true;
         restartButton.addActionListener(e -> {
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
